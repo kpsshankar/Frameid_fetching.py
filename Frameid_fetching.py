@@ -1,57 +1,65 @@
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
 from time import sleep
 
 
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+class RadioButton:
+
+    
+    def __init__(self, url = "https://www.cowin.gov.in/"):
+       self.url = url
+       self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-sleep(3)
-driver.maximize_window()
+    def boot(self):
+       self.driver.get(self.url)
+       sleep(3)
+       self.driver.maximize_window()
+       sleep(10)
 
 
-# Open the first link
-driver.get("https://www.cowin.gov.in/")
+    def clickFAQ(self):
+       fullXpath = "/html/body/app-root/app-header/header/div[4]/div/div[1]/div/nav/div[3]/div/ul/li[4]/a"
+       element = self.driver.find_element(by=By.XPATH, value=fullXpath)
+       element.click
+       sleep(5)
 
-
-# Open a new tab
-driver.execute_script("window.open('about:blank', '_blank')")
-sleep(3)
-# window_handles = ["guvi.in", "about:blank", ... ]
-driver.switch_to.window(driver.window_handles[1])
-sleep(3)
-driver.get("https://www.cowin.gov.in/faq")
-sleep(3)
-
-
-driver.execute_script("window.open('about:blank', '_blank')")
-sleep(3)
-driver.switch_to.window(driver.window_handles[2])
-sleep(3)
-driver.get("https://www.cowin.gov.in/our-partner")
-sleep(3)
-
-
-# First Tab
-driver.switch_to.window(driver.window_handles[0])
-print(driver.current_url)
-sleep(3)
-
-
-# Second Tab
-driver.switch_to.window(driver.window_handles[1])
-print(driver.current_url)
-sleep(3)
-
-
-# Third Tab
-driver.switch_to.window(driver.window_handles[2])
-print(driver.current_url)
-sleep(3)
-
+           
+    def clickPARTNERS(self):
+       relativeXpath = "//div[@class='menunavigation']/ul/li[5]/a"
+       element = self.driver.find_element(by=By.XPATH, value=relativeXpath)
+       element.click
+       sleep(5)
+       
+                                                                                                                                                                                                            
+                                                                                                                                                                                                       #to get window ID
+       print("inventory")                                                                                                                                                                                                                                                                                                                                                                               
+       print(self.driver.current_window_handle)
+       
+       self.driver.execute_script("window.open('about:blank', '_blank')")
+       self.driver.switch_to.window(self.driver.window_handles[1])
+       self.driver.get(self.url)                                                                                                        
+       
+       print("login")
+       print(self.driver.current_window_handle)
+                                                                                                                                                                                                                                                                
+       
+       #to close current window
+       self.driver.close()                                                                                                                                                                                                                                                          
+       sleep(3)
+       #self.quit
+       
+           
+obj = RadioButton()
+obj.boot()
+obj.clickFAQ()
+obj.clickPARTNERS()
 
 
 
-driver.quit()
+
+
+ 
 
